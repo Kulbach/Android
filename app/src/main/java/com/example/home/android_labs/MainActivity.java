@@ -1,5 +1,7 @@
 package com.example.home.android_labs;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +22,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final EditText inputName = findViewById(R.id.inputName);
+        final TextView sayHelloText = findViewById(R.id.sayHelloText);
+        final Button clearButton = findViewById(R.id.clearButton);
+        final Button sayHello= findViewById(R.id.sayHello);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inputName.setText("");
+                sayHelloText.setText("");
+
+            }
+        });
+
+        inputName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                inputName.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+
+            }
+        });
+
+        sayHello.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = inputName.getText().toString();
+                sayHelloText.setText("Hello " + name + "!");
+
+
+            }
+        });
 
 
     }
