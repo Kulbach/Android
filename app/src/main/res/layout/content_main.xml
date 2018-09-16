@@ -14,39 +14,77 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textColor="@color/text_edit_color"
-        android:hint="Input your name!" />
-
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="Clear"
-        tools:layout_editor_absoluteX="219dp"
-        tools:layout_editor_absoluteY="141dp" />
-
-    <Button
-        android:id="@+id/sayHello"
+        android:hint="Enter your name" />
+    <EditText
+        android:id="@+id/inputSurname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/inputName"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text_edit_color"
+        android:hint="Enter your surname" />
+
+
+    <EditText
+        android:id="@+id/inputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputSurname"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text_edit_color"
+        android:inputType="textEmailAddress"
+        android:hint="Enter your email" />
+
+    <EditText
+        android:id="@+id/inputPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputEmail"
+        android:layout_centerHorizontal="true"
+        android:inputType="phone"
+        android:textColor="@color/text_edit_color"
+        android:hint="Enter your phone" />
+    <EditText
+        android:id="@+id/inputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputPhone"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text_edit_color"
+        android:inputType="textPassword"
+        android:hint="Enter your password" />
+    <EditText
+        android:id="@+id/inputConfirmedPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputPassword"
+        android:layout_centerHorizontal="true"
+        android:inputType="textPassword"
+        android:textColor="@color/text_edit_color"
+        android:hint="Confirm your password" />
+
+
+
+    <Button
+        android:id="@+id/Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputConfirmedPassword"
+        android:layout_centerHorizontal="true"
         android:textColor="@color/button_text"
-        android:text="Say hello" />
+        android:text="Submit" />
 
     <TextView
-        android:id="@+id/sayHelloText"
+        android:id="@+id/Result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:state_focused="true"
-        android:state_selected="true"
-        android:gravity="center"
-        android:text=""
-        android:layout_below="@+id/sayHello"/>
+        android:layout_below="@+id/Submit"
+        />
+
+
+
+
+
 
 
 </RelativeLayout>
