@@ -73,12 +73,20 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/button_text"
         android:text="Submit" />
+    <Button
+        android:id="@+id/View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Submit"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/button_text"
+        android:text="View List" />
 
     <TextView
         android:id="@+id/Result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Submit"
+        android:layout_below="@+id/View"
         />
 
 
