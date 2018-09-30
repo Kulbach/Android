@@ -106,7 +106,11 @@ public class Hit {
      * @param imageWidth
      * @param comments
      */
-    public Hit(String largeImageURL, int webformatHeight, int webformatWidth, int likes, int imageWidth, int id, int userId, int views, int comments, String pageURL, int imageHeight, String webformatURL, String type, int previewHeight, String tags, int downloads, String user, int favorites, int imageSize, int previewWidth, String userImageURL, String previewURL) {
+    public Hit(String largeImageURL, int webformatHeight, int webformatWidth, int likes,
+               int imageWidth, int id, int userId, int views, int comments, String pageURL,
+               int imageHeight, String webformatURL, String type, int previewHeight, String tags,
+               int downloads, String user, int favorites, int imageSize, int previewWidth,
+               String userImageURL, String previewURL) {
         super();
         this.largeImageURL = largeImageURL;
         this.webformatHeight = webformatHeight;

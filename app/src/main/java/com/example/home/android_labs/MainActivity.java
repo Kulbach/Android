@@ -1,11 +1,13 @@
 package com.example.home.android_labs;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.home.android_labs.Entity.Flowers;
@@ -15,6 +17,7 @@ import com.example.home.android_labs.Retrofit.RetroClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private RetroClient retroClient = new RetroClient();
     private Call<Flowers> call = retroClient.getApiService().getData();
     private ListView mListMain;
-    private ArrayAdapter<String> mAdapter;
-    private List<String> mList = new ArrayList<>();
+    private CustomListAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView noData;
 
 
     @Override
@@ -35,18 +39,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mListMain = findViewById(R.id.lvMain);
+        noData = findViewById(R.id.list_empty);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                makeCall();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         makeCall();
     }
 
     private void makeCall() {
-        call.enqueue(new Callback<Flowers>() {
+        call.clone().enqueue(new Callback<Flowers>() {
             @Override
             public void onResponse(Call<Flowers> call, Response<Flowers> response) {
                 Toast.makeText(MainActivity.this, R.string.successful_response,
                         Toast.LENGTH_LONG).show();
-                List<Hit> hits = response.body().getHits();
-                hitsToString(hits);
+                if (response.body() == null) {
+                    noData.setText(R.string.no_data);
+                } else {
+                    List<Hit> hits = response.body().getHits();
+                    setmAdapter(hits);
+                }
             }
 
             @Override
@@ -57,15 +75,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void hitsToString(List<Hit> hits) {
-        for (Hit hit : hits)
-            mList.add(hit.toString());
-        setmAdapter();
-    }
 
-    private void setmAdapter() {
-        mAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, mList);
+    private void setmAdapter(List<Hit> hits) {
+        mAdapter = new CustomListAdapter(getApplicationContext(), R.layout.listview_layout, hits);
         mListMain.setAdapter(mAdapter);
     }
+
 }
