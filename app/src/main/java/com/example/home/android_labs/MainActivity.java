@@ -1,8 +1,12 @@
 package com.example.home.android_labs;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputPassword;
     private EditText inputConfirmedPassword;
     private Button submit;
+    private Button view;
     private TextView result;
+    public static final Pattern NAME_PATTERN = Pattern.compile("^[A-Z][a-z\\s]{1,}");
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmedPassword = findViewById(R.id.inputConfirmedPassword);
         submit = findViewById(R.id.Submit);
+        view = findViewById(R.id.View);
         result = findViewById(R.id.Result);
+
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -55,12 +67,31 @@ public class MainActivity extends AppCompatActivity {
                 if (errors.isEmpty()) {
                     result.setTextColor(Color.parseColor("#00FF00"));
                     result.setText("Registration was completed successfully");
+                    Users newUser = new Users(inputName.getText().toString(),inputSurname.getText().toString(),inputPhone.getText().toString());
+                    SharedPreferences mPrefs = getSharedPreferences("MyPrefs",
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(newUser);
+                    prefsEditor.putString(inputName.getText().toString()+inputPhone.getText().toString(), json);
+                    prefsEditor.commit();
+
+
+
                 } else {
                     result.setTextColor(Color.parseColor("#FF0000"));
                     result.setText(errors.toString());
                 }
 
 
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, UsersActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -76,11 +107,9 @@ public class MainActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString();
         String confirmedPassword = inputConfirmedPassword.getText().toString();
 
-        Pattern namePattern = Pattern.compile("^[A-Z][a-z\\s]{1,}");
-        Pattern passwordPattern = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}");
-        Matcher matcherName = namePattern.matcher(name);
-        Matcher matcherSurname = namePattern.matcher(surname);
-        Matcher matcherPassword = passwordPattern.matcher(password);
+        Matcher matcherName = NAME_PATTERN.matcher(name);
+        Matcher matcherSurname = NAME_PATTERN.matcher(surname);
+        Matcher matcherPassword = PASSWORD_PATTERN.matcher(password);
 
         if (name.isEmpty())
             errors.add("Field name is empty \n");
