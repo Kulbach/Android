@@ -3,10 +3,9 @@ package com.example.home.android_labs;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,20 +13,16 @@ import com.example.home.android_labs.Entity.Flowers;
 import com.example.home.android_labs.Entity.Hit;
 import com.example.home.android_labs.Retrofit.RetroClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RetroClient retroClient = new RetroClient();
-    private Call<Flowers> call = retroClient.getApiService().getData();
-    private ListView mListMain;
-    private CustomListAdapter mAdapter;
+    private RecyclerView mRecycleView;
+    private CustomRecycleAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView noData;
 
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mListMain = findViewById(R.id.lvMain);
+        mRecycleView = findViewById(R.id.lvMain);
         noData = findViewById(R.id.list_empty);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -54,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeCall() {
+        Call<Flowers> call = RetroClient.getApiService().getData();
         call.clone().enqueue(new Callback<Flowers>() {
             @Override
             public void onResponse(Call<Flowers> call, Response<Flowers> response) {
@@ -77,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setmAdapter(List<Hit> hits) {
-        mAdapter = new CustomListAdapter(getApplicationContext(), R.layout.listview_layout, hits);
-        mListMain.setAdapter(mAdapter);
+        mAdapter = new CustomRecycleAdapter(hits);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(MainActivity.this);
+        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.setAdapter(mAdapter);
     }
-
 }
