@@ -1,11 +1,16 @@
 package com.example.home.android_labs;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,33 +20,47 @@ import com.example.home.android_labs.Retrofit.RetroClient;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecycleView;
+    public static final String DETAILS = "details";
     private CustomRecycleAdapter mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TextView noData;
+
+    @BindView(R.id.lvMain)
+    RecyclerView mRecycleView;
+    @BindView(R.id.list_empty)
+    TextView noData;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.move)
+    Button mMoveToFavourites;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mRecycleView = findViewById(R.id.lvMain);
-        noData = findViewById(R.id.list_empty);
+        ButterKnife.bind(this);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 makeCall();
                 mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        mMoveToFavourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,
+                        FavouritesActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -59,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     noData.setText(R.string.no_data);
                 } else {
                     List<Hit> hits = response.body().getHits();
-                    setmAdapter(hits);
+                    setmAdapter(hits, mAdapter, mRecycleView, MainActivity.this);
                 }
             }
 
@@ -72,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setmAdapter(List<Hit> hits) {
-        mAdapter = new CustomRecycleAdapter(hits);
+    public void setmAdapter(List<Hit> hits, CustomRecycleAdapter adapter,
+                            RecyclerView recyclerView, Activity activity) {
+        adapter = new CustomRecycleAdapter(activity, hits);
         RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(MainActivity.this);
-        mRecycleView.setLayoutManager(layoutManager);
-        mRecycleView.setAdapter(mAdapter);
+                new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 }
