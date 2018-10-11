@@ -13,6 +13,8 @@ public class RetroClient {
      * Get Retrofit Instance
      */
 
+    private RetroClient(){};
+
     private static Retrofit getRetrofitInstance() {
         return new Retrofit.Builder()
                 .baseUrl(ROOT_URL)

@@ -4,6 +4,7 @@
     <string name="title_activity_users">UsersActivity</string>
     <string name="successful_response">Successful response: </string>
     <string name="unsuccessful_response">Unsuccessful response:</string>
+    <string name="no_data">No data to show</string>
     <!--main screen-->
     <string name="reg_completed">Registration was completed successfully</string>
 </resources>
