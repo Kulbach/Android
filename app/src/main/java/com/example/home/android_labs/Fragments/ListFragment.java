@@ -21,6 +21,7 @@ import com.example.home.android_labs.R;
 import com.example.home.android_labs.Retrofit.RetroClient;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 
 public class ListFragment extends Fragment {
     private CustomRecycleAdapter mAdapter;
+    private boolean isChange = false;
 
     @BindView(R.id.lvMain)
     RecyclerView mRecycleView;
@@ -49,8 +51,8 @@ public class ListFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isChange = true;
                 makeCall();
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -76,7 +78,11 @@ public class ListFragment extends Fragment {
                     noData.setText(R.string.no_data);
                 } else {
                     List<Hit> hits = response.body().getHits();
-                    setmAdapter(hits, mAdapter, mRecycleView, getActivity());
+                    if(!isChange) {
+                    setmAdapter(hits, mRecycleView, getActivity());
+                    } else {
+                        refreshData(hits);
+                    }
                 }
             }
 
@@ -88,13 +94,19 @@ public class ListFragment extends Fragment {
         });
     }
 
-    public void setmAdapter(List<Hit> hits, CustomRecycleAdapter adapter,
+    public void setmAdapter(List<Hit> hits,
                             RecyclerView recyclerView, Activity activity) {
-        adapter = new CustomRecycleAdapter(activity, hits);
+        mAdapter = new CustomRecycleAdapter(activity, hits);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    public void refreshData(List<Hit> hits){
+        mAdapter.clear();
+        mAdapter.addAll(hits);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 

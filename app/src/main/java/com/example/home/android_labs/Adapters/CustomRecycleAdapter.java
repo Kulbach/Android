@@ -20,6 +20,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.home.android_labs.MainActivity.DETAILS;
 
 public class CustomRecycleAdapter extends RecyclerView.Adapter<CustomRecycleAdapter.ViewHolder>  {
@@ -38,6 +41,17 @@ public class CustomRecycleAdapter extends RecyclerView.Adapter<CustomRecycleAdap
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.listview_layout, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void clear() {
+        mHits.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Hit> hits) {
+        int pos = getItemCount();
+        this.mHits.addAll(hits);
+        notifyItemRangeInserted(pos, this.mHits.size());
     }
 
     @Override
@@ -65,17 +79,18 @@ public class CustomRecycleAdapter extends RecyclerView.Adapter<CustomRecycleAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.image)
         ImageView imageView;
+        @BindView(R.id.user)
         TextView userName;
+        @BindView(R.id.tags)
         TextView tags;
+        @BindView(R.id.parent_layout)
         LinearLayout parentLayout;
 
         ViewHolder(View convertView) {
             super(convertView);
-            imageView = convertView.findViewById(R.id.image);
-            userName =  convertView.findViewById(R.id.user);
-            tags =  convertView.findViewById(R.id.tags);
-            parentLayout = convertView.findViewById(R.id.parent_layout);
+            ButterKnife.bind(this, convertView);
         }
     }
 }
