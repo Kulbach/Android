@@ -1,32 +1,33 @@
-package com.example.home.android_labs;
+package com.example.home.android_labs.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.home.android_labs.Entity.Hit;
+import com.example.home.android_labs.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static com.example.home.android_labs.MainActivity.DETAILS;
+import static com.example.home.android_labs.MainActivity.FAVOURITES;
 
-
-public class DetailsActivity extends AppCompatActivity {
-
-    public static final String FAVOURITES = "Favourites";
+public class DetailsFragment extends Fragment {
     public static final int H = 1150;
     private Hit hit;
     private boolean isImageFitToScreen;
     private SharedPreferences mPrefs;
+    private Bundle bundle;
 
     @BindView(R.id.image_details)
     ImageView imageView;
@@ -43,14 +44,13 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.fav)
     ImageView fav;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-        ButterKnife.bind(this);
-        initializeItems();
-        getIncomingIntent();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.content_details, container, false);
+        ButterKnife.bind(this, view);
+        bundle = this.getArguments();
+        getIncomingFragment();
         setItems();
         isFavourite();
 
@@ -67,22 +67,7 @@ public class DetailsActivity extends AppCompatActivity {
                 favouritesHandler();
             }
         });
-    }
-
-    private void initializeItems() {
-        imageView = findViewById(R.id.image_details);
-        user = findViewById(R.id.user_details);
-        tags = findViewById(R.id.tags_details);
-        type = findViewById(R.id.type_details);
-        views = findViewById(R.id.views_details);
-        favourites = findViewById(R.id.favourites_details);
-        fav = findViewById(R.id.fav);
-    }
-
-    private void getIncomingIntent() {
-        if (getIntent().hasExtra(DETAILS)) {
-            hit = new Gson().fromJson(getIntent().getStringExtra("details"), Hit.class);
-        }
+        return view;
     }
 
     private void setItems() {
@@ -92,7 +77,13 @@ public class DetailsActivity extends AppCompatActivity {
         type.setText(hit.getType());
         views.setText(String.valueOf(hit.getViews()));
         favourites.setText(String.valueOf(hit.getFavorites()));
-        mPrefs = getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
+        mPrefs = getActivity().getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
+    }
+
+    private void getIncomingFragment() {
+        if (bundle != null) {
+            hit = new Gson().fromJson(bundle.getString(DETAILS), Hit.class);
+        }
     }
 
     private void controlImage() {
@@ -123,4 +114,6 @@ public class DetailsActivity extends AppCompatActivity {
         if (mPrefs.contains(hit.getUser()))
             fav.setImageResource(R.drawable.ic_favorite_black_24dp);
     }
+
+
 }

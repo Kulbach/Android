@@ -1,9 +1,7 @@
-package com.example.home.android_labs;
+package com.example.home.android_labs.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.home.android_labs.Entity.Hit;
+import com.example.home.android_labs.Fragments.DetailsFragment;
+import com.example.home.android_labs.MainActivity;
+import com.example.home.android_labs.R;
 import com.squareup.picasso.Picasso;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -50,9 +49,11 @@ public class CustomRecycleAdapter extends RecyclerView.Adapter<CustomRecycleAdap
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra(DETAILS, new Gson().toJson(mHits.get(position)));
-                mContext.startActivity(intent);
+                DetailsFragment fragment = new DetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(DETAILS, new Gson().toJson(mHits.get(position)));
+                fragment.setArguments(bundle);
+                ((MainActivity) v.getContext()).setFragment(fragment);
             }
         });
     }
