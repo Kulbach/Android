@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import com.example.home.android_labs.Adapters.CustomRecycleAdapter;
 import com.example.home.android_labs.Entity.Hit;
-import com.example.home.android_labs.HitIntractorImpl;
-import com.example.home.android_labs.MainList;
-import com.example.home.android_labs.MainPresenterImpl;
+import com.example.home.android_labs.MainActivity;
+import com.example.home.android_labs.Models.MainInteractorImpl;
+import com.example.home.android_labs.Presenters.MainPresenter;
+import com.example.home.android_labs.Presenters.MainPresenterImpl;
+import com.example.home.android_labs.Views.MainView;
 import com.example.home.android_labs.R;
 
 import java.util.List;
@@ -23,10 +25,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListFragment extends Fragment implements MainList.MainView {
+public class ListFragment extends Fragment implements MainView {
     private CustomRecycleAdapter mAdapter;
     private boolean isChange = false;
-    private MainList.MainPresenter presenter;
+    private MainPresenter presenter;
 
     @BindView(R.id.lvMain)
     RecyclerView mRecycleView;
@@ -44,13 +46,20 @@ public class ListFragment extends Fragment implements MainList.MainView {
         ButterKnife.bind(this, view);
         initializeRecyclerView();
 
-        presenter = new MainPresenterImpl(this, new HitIntractorImpl());
+        presenter = new MainPresenterImpl(this, new MainInteractorImpl());
         getData();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 isChange = true;
                 getData();
+            }
+        });
+
+        mMoveToFavourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) v.getContext()).setFragment(new FavouritesFragment());
             }
         });
 

@@ -1,16 +1,19 @@
-package com.example.home.android_labs;
+package com.example.home.android_labs.Presenters;
 
 import com.example.home.android_labs.Entity.Hit;
+import com.example.home.android_labs.Models.MainInteractor;
+import com.example.home.android_labs.Presenters.MainPresenter;
+import com.example.home.android_labs.Views.MainView;
 
 import java.util.List;
 
-public class MainPresenterImpl implements MainList.MainPresenter,
-        MainList.HitIntractor.OnFinishedListener {
+public class MainPresenterImpl implements MainPresenter,
+        MainInteractor.OnFinishedListener {
 
-    private MainList.MainView view;
-    private MainList.HitIntractor interactor;
+    private MainView view;
+    private MainInteractor interactor;
 
-    public MainPresenterImpl(MainList.MainView mainView, MainList.HitIntractor hitIntractor) {
+    public MainPresenterImpl(MainView mainView, MainInteractor hitIntractor) {
         this.view = mainView;
         this.interactor = hitIntractor;
     }
