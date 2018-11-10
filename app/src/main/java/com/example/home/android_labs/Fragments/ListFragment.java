@@ -67,7 +67,6 @@ public class ListFragment extends Fragment implements MainView {
         return view;
     }
 
-
     private void initializeRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(layoutManager);

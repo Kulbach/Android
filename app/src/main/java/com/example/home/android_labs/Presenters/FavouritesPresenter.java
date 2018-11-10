@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface FavouritesPresenter {
     void requestDataFromStorage();
-    void addData(List<Hit> hits);
 }

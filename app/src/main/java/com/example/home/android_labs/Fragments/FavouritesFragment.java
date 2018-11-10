@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 
 import com.example.home.android_labs.Adapters.CustomRecycleAdapter;
 import com.example.home.android_labs.Entity.Hit;
+import com.example.home.android_labs.Presenters.FavouritesPresenter;
+import com.example.home.android_labs.Presenters.FavouritesPresenterImpl;
 import com.example.home.android_labs.R;
+import com.example.home.android_labs.Repositories.FavouritesRepository;
+import com.example.home.android_labs.Views.FavouritesView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -25,11 +29,11 @@ import butterknife.ButterKnife;
 
 import static com.example.home.android_labs.MainActivity.FAVOURITES;
 
-public class FavouritesFragment extends Fragment {
+public class FavouritesFragment extends Fragment implements FavouritesView {
 
     private CustomRecycleAdapter mAdapter;
-    private List<Hit> mHitList;
-    private SharedPreferences mPrefs;
+    private FavouritesRepository repository;
+    private FavouritesPresenter presenter;
 
     @BindView(R.id.lvMain)
     RecyclerView mRecycleView;
@@ -39,29 +43,26 @@ public class FavouritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_favourites, container, false);
         ButterKnife.bind(this, view);
-        mHitList = new ArrayList<>();
+        repository = new FavouritesRepository(getActivity());
+        presenter = new FavouritesPresenterImpl(this, repository);
+        initializeRecyclerView();
         getFavourites();
-        setmAdapter(mHitList, mAdapter, mRecycleView, getActivity());
         return view;
     }
 
     private void getFavourites() {
-        mPrefs = getActivity().getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
-        Map<String, ?> map = mPrefs.getAll();
-
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            Hit hit = new Gson().fromJson(entry.getValue().toString(), Hit.class);
-            mHitList.add(hit);
-        }
+        presenter.requestDataFromStorage();
     }
 
-    public void setmAdapter(List<Hit> hits, CustomRecycleAdapter adapter,
-                            RecyclerView recyclerView, Activity activity) {
-        adapter = new CustomRecycleAdapter(activity, hits);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+    private void initializeRecyclerView() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecycleView.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void setDataToRecyclerView(List<Hit> hits) {
+        mAdapter = new CustomRecycleAdapter(getActivity(), hits);
+        mRecycleView.setAdapter(mAdapter);
     }
 
 }

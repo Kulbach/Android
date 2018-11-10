@@ -5,10 +5,11 @@ import android.support.v4.app.Fragment;
 
 import com.example.home.android_labs.Presenters.DetailsPresenter;
 
-public class DetailsRepository  {
+public class DetailsRepository {
     Context context;
     Fragment fragment;
-    public DetailsRepository(Context context, Fragment fragment){
+
+    public DetailsRepository(Context context, Fragment fragment) {
         this.context = context;
         this.fragment = fragment;
     }
