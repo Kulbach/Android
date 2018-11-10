@@ -1,7 +1,5 @@
 package com.example.home.android_labs.Models;
 
-import android.content.Context;
-
 import com.example.home.android_labs.Entity.Hit;
 
 import java.util.List;

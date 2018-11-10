@@ -7,5 +7,4 @@ public interface DetailsView {
     void removeFromFavourite();
     void isFavourite(boolean favourite);
     void setHit(Hit hit);
-
 }

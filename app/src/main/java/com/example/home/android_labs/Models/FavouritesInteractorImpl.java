@@ -19,12 +19,12 @@ public class FavouritesInteractorImpl implements FavouritesInteractor {
     FavouritesInteractor.OnFinishedListener onFinishedListener;
 
     public FavouritesInteractorImpl(FavouritesRepository repository,
-                                 OnFinishedListener onFinishedListener) {
+                                    OnFinishedListener onFinishedListener) {
         this.repository = repository;
         this.onFinishedListener = onFinishedListener;
     }
 
-    public void getHitArrayList(){
+    public void getHitArrayList() {
         SharedPreferences mPrefs = repository.getContext().
                 getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
         List<Hit> hits = new ArrayList<>();

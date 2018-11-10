@@ -24,7 +24,6 @@ public class MainPresenterImpl implements MainPresenter,
         interactor.getHitArrayList(this, isChange);
     }
 
-
     @Override
     public void onFinished(List<Hit> hitArrayList, boolean isChange) {
         if (view != null) {

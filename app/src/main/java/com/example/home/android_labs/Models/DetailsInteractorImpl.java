@@ -15,16 +15,17 @@ public class DetailsInteractorImpl implements DetailsInteractor {
 
     DetailsRepository repository;
     DetailsInteractor.OnFinishedListener onFinishedListener;
+    SharedPreferences mPrefs;
 
     public DetailsInteractorImpl(DetailsRepository repository,
                                  OnFinishedListener onFinishedListener) {
         this.repository = repository;
         this.onFinishedListener = onFinishedListener;
+        this.mPrefs = repository.getContext().
+                getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
     }
 
     public void doFavourite(Hit hit) {
-        SharedPreferences mPrefs = repository.getContext().
-                getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
         if (!mPrefs.contains(hit.getUser())) {
             mPrefs.edit().putString(hit.getUser(), new Gson().toJson(hit)).commit();
             onFinishedListener.onAdd();
@@ -35,8 +36,6 @@ public class DetailsInteractorImpl implements DetailsInteractor {
     }
 
     public void isFavourite(Hit hit) {
-        SharedPreferences mPrefs = repository.getContext().
-                getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
         if (mPrefs.contains(hit.getUser())) {
             onFinishedListener.favouriteResult(true);
         } else {

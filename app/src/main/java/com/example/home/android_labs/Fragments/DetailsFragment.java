@@ -48,7 +48,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
         View view = inflater.inflate(R.layout.content_details, container, false);
         ButterKnife.bind(this, view);
         repository = new DetailsRepository(getActivity(), this);
-        presenter = new DetailsPresenterImpl(this, repository );
+        presenter = new DetailsPresenterImpl(this, repository);
         getHit();
         setItems();
         ifFavouriteOnStart();
@@ -68,6 +68,7 @@ public class DetailsFragment extends Fragment implements DetailsView {
         });
         return view;
     }
+
     private void setItems() {
         Picasso.get().load(hit.getLargeImageURL()).into(imageView);
         user.setText(hit.getUser());
@@ -76,32 +77,40 @@ public class DetailsFragment extends Fragment implements DetailsView {
         views.setText(String.valueOf(hit.getViews()));
         favourites.setText(String.valueOf(hit.getFavorites()));
     }
-    public void getHit(){
+
+    public void getHit() {
         presenter.getHit();
     }
-    public void ifFavouriteOnStart(){
+
+    public void ifFavouriteOnStart() {
         presenter.ifFavourite(hit);
     }
-    public void favouritesHandler(){
-        presenter.checkFavourite( hit);
+
+    public void favouritesHandler() {
+        presenter.checkFavourite(hit);
     }
+
     @Override
-    public void setHit(Hit hit){
+    public void setHit(Hit hit) {
         this.hit = hit;
     }
+
     @Override
-    public void addToFavourite(){
+    public void addToFavourite() {
         fav.setImageResource(R.drawable.ic_favorite_black_24dp);
-    };
+    }
+
     @Override
-    public void removeFromFavourite(){
+    public void removeFromFavourite() {
         fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
     }
+
     @Override
     public void isFavourite(boolean favourite) {
         if (favourite)
             fav.setImageResource(R.drawable.ic_favorite_black_24dp);
     }
+
     private void controlImage() {
         if (isImageFitToScreen) {
             isImageFitToScreen = false;

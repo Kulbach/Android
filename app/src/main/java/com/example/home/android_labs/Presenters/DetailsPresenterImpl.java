@@ -6,7 +6,7 @@ import com.example.home.android_labs.Models.DetailsInteractorImpl;
 import com.example.home.android_labs.Repositories.DetailsRepository;
 import com.example.home.android_labs.Views.DetailsView;
 
-public class DetailsPresenterImpl implements DetailsPresenter, DetailsInteractor.OnFinishedListener{
+public class DetailsPresenterImpl implements DetailsPresenter, DetailsInteractor.OnFinishedListener {
 
     private DetailsView view;
     private DetailsInteractor interactor;
@@ -19,12 +19,10 @@ public class DetailsPresenterImpl implements DetailsPresenter, DetailsInteractor
         this.interactor = new DetailsInteractorImpl(repository, this);
     }
 
-    @Override
     public void onAdd() {
         view.addToFavourite();
     }
 
-    @Override
     public void onRemove() {
         view.removeFromFavourite();
     }
@@ -37,7 +35,6 @@ public class DetailsPresenterImpl implements DetailsPresenter, DetailsInteractor
         interactor.isFavourite(hit);
     }
 
-    @Override
     public void favouriteResult(boolean favourite) {
         view.isFavourite(favourite);
     }
@@ -46,7 +43,6 @@ public class DetailsPresenterImpl implements DetailsPresenter, DetailsInteractor
         interactor.getHit();
     }
 
-    @Override
     public void setHit(Hit hit) {
         view.setHit(hit);
     }
