@@ -1,4 +1,5 @@
 package com.example.home.android_labs.Fragments;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -46,7 +47,7 @@ public class ListFragment extends Fragment implements MainView {
         ButterKnife.bind(this, view);
         initializeRecyclerView();
 
-        presenter = new MainPresenterImpl(this, new MainInteractorImpl());
+        presenter = new MainPresenterImpl(this);
         getData();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -72,7 +73,7 @@ public class ListFragment extends Fragment implements MainView {
         mRecycleView.setLayoutManager(layoutManager);
     }
 
-    private void getData(){
+    private void getData() {
         presenter.requestDataFromServer(isChange);
     }
 

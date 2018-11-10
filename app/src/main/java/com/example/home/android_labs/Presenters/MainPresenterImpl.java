@@ -2,6 +2,7 @@ package com.example.home.android_labs.Presenters;
 
 import com.example.home.android_labs.Entity.Hit;
 import com.example.home.android_labs.Models.MainInteractor;
+import com.example.home.android_labs.Models.MainInteractorImpl;
 import com.example.home.android_labs.Presenters.MainPresenter;
 import com.example.home.android_labs.Views.MainView;
 
@@ -13,9 +14,9 @@ public class MainPresenterImpl implements MainPresenter,
     private MainView view;
     private MainInteractor interactor;
 
-    public MainPresenterImpl(MainView mainView, MainInteractor hitIntractor) {
+    public MainPresenterImpl(MainView mainView) {
         this.view = mainView;
-        this.interactor = hitIntractor;
+        this.interactor = new MainInteractorImpl();
     }
 
     @Override

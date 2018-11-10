@@ -4,8 +4,6 @@ import com.example.home.android_labs.Entity.Hit;
 
 import java.util.List;
 
-public interface MainView {
+public interface FavouritesView {
     void setDataToRecyclerView(List<Hit> hitArrayList);
-    void refreshData(List<Hit> hits);
-    void onResponseFailure(Throwable throwable);
 }

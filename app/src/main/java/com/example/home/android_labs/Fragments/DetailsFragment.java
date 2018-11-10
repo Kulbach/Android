@@ -1,7 +1,5 @@
 package com.example.home.android_labs.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,26 +10,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.home.android_labs.Entity.Hit;
-import com.example.home.android_labs.Models.DetailsInteractorImpl;
 import com.example.home.android_labs.Presenters.DetailsPresenter;
 import com.example.home.android_labs.Presenters.DetailsPresenterImpl;
 import com.example.home.android_labs.R;
+import com.example.home.android_labs.Repositories.DetailsRepository;
 import com.example.home.android_labs.Views.DetailsView;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import static com.example.home.android_labs.MainActivity.DETAILS;
-import static com.example.home.android_labs.MainActivity.FAVOURITES;
 
 public class DetailsFragment extends Fragment implements DetailsView {
     public static final int H = 1150;
     private Hit hit;
     private boolean isImageFitToScreen;
-    private SharedPreferences mPrefs;
-    private Bundle bundle;
     private DetailsPresenter presenter;
+    private DetailsRepository repository;
 
     @BindView(R.id.image_details)
     ImageView imageView;
@@ -53,11 +47,11 @@ public class DetailsFragment extends Fragment implements DetailsView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_details, container, false);
         ButterKnife.bind(this, view);
-        bundle = this.getArguments();
-        presenter = new DetailsPresenterImpl(this, new DetailsInteractorImpl());
+        repository = new DetailsRepository(getActivity(), this);
+        presenter = new DetailsPresenterImpl(this, repository );
         getHit();
         setItems();
-        ifFavourite();
+        ifFavouriteOnStart();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,16 +75,15 @@ public class DetailsFragment extends Fragment implements DetailsView {
         type.setText(hit.getType());
         views.setText(String.valueOf(hit.getViews()));
         favourites.setText(String.valueOf(hit.getFavorites()));
-        mPrefs = getActivity().getSharedPreferences(FAVOURITES, Context.MODE_PRIVATE);
     }
     public void getHit(){
-        presenter.getHit(this);
+        presenter.getHit();
     }
-    public void ifFavourite(){
-        presenter.ifFavourite(getActivity(), hit);
+    public void ifFavouriteOnStart(){
+        presenter.ifFavourite(hit);
     }
     public void favouritesHandler(){
-        presenter.checkFavourite(getActivity(), hit);
+        presenter.checkFavourite( hit);
     }
     @Override
     public void setHit(Hit hit){

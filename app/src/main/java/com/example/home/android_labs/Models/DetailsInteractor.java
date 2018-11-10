@@ -7,7 +7,15 @@ import com.example.home.android_labs.Entity.Hit;
 import com.example.home.android_labs.Presenters.DetailsPresenter;
 
 public interface DetailsInteractor {
-    void doFavourite(Context context, Hit hit, DetailsPresenter detailsPeresenter);
-    void isFavourite(Context context, Hit hit, DetailsPresenter detailsPeresenter);
-    void getHit(Fragment fragment, DetailsPresenter presenter);
+
+    interface OnFinishedListener {
+        void onAdd();
+        void onRemove();
+        void favouriteResult(boolean change);
+        void setHit(Hit hit);
+    }
+
+    void doFavourite(Hit hit);
+    void isFavourite(Hit hit);
+    void getHit();
 }
