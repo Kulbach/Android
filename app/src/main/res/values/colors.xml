@@ -6,4 +6,6 @@
     <color name="itemBackground">#424242</color>
     <color name="txtPrimary">#fafafa</color>
     <color name="txtSecondary">#eeeeee</color>
+    <color name="itemName">#ff9a00</color>
+    <color name="lineColor">#dedede</color>
 </resources>
